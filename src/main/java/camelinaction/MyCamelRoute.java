@@ -11,9 +11,11 @@ public class MyCamelRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("direct:whoami")
-            .log("Processing request")
-            .transform().body(String.class, MyCamelRoute::whoAmI);
+        rest()
+            .get("/hello").produces("text/plain")
+                .route().routeId("whoami")
+                .log("Processing request")
+                .transform().body(String.class, MyCamelRoute::whoAmI);
     }
 
     public static String whoAmI(String body) {
